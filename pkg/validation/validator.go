@@ -17,7 +17,8 @@ func IsEmail(input string) bool {
 
 // IsPhone ...
 func IsPhone(input string) bool {
-	return IsMatch(SanitizePhone(input), "^+62[0-9]{10,13}$")
+	sanitized := SanitizePhone(input)
+	return IsMatch(sanitized, `^\+62[0-9]{10,13}$`)
 }
 
 // IsValidPassword ...
@@ -44,6 +45,9 @@ func SanitizePhone(input string) string {
 
 	preExp, _ := regexp.Compile(`^(\+?62|0)([0-9]*)`)
 	matches := preExp.FindStringSubmatch(stripped)
+	if len(matches) == 0 {
+		return ""
+	}
 	sanitized := fmt.Sprintf("%s%s", "+62", matches[len(matches)-1])
 	return sanitized
 }
