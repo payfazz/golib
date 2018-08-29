@@ -27,6 +27,8 @@ func ResponseWithError(writer http.ResponseWriter, err error) {
 		ResponseWithData(writer, http.StatusUnprocessableEntity, err)
 	case e.NotFoundError:
 		ResponseWithData(writer, http.StatusNotFound, err)
+	case e.PermissionError:
+		ResponseWithData(writer, http.StatusUnauthorized, err)
 	default:
 		httpCode := http.StatusBadRequest
 		http.Error(writer, err.Error(), httpCode)
