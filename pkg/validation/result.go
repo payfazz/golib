@@ -6,19 +6,20 @@ import (
 
 // Result ...
 type Result struct {
+	Code    string   `json:"code"`
 	Message string   `json:"message"`
 	Fields  []*Field `json:"fields"`
 }
 
 // Field ...
 type Field struct {
-	Name    string `json:"name"`
+	Name    string `json:"field"`
 	Message string `json:"message"`
 }
 
 // NewResult return new validation result
 func NewResult() *Result {
-	r := &Result{Message: `validation error`}
+	r := &Result{Message: `validation error`, Code: "ValidationError"}
 	return r
 }
 
