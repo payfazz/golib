@@ -24,7 +24,8 @@ func ResponseWithData(writer http.ResponseWriter, statusCode int, data interface
 func ResponseWithError(writer http.ResponseWriter, err error) {
 	switch err.(type) {
 	case validation.Error:
-		ResponseWithData(writer, http.StatusUnprocessableEntity, err)
+		vErr := err.(validation.Error)
+		ResponseWithData(writer, http.StatusUnprocessableEntity, vErr.Result)
 	case e.NotFoundError:
 		ResponseWithData(writer, http.StatusNotFound, err)
 	case e.PermissionError:
