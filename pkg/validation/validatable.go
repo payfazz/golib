@@ -1,6 +1,8 @@
 package validation
 
+import "context"
+
 // Validatable ...
 type Validatable interface {
-	Validate(context interface{}) *Result
+	Validate(context context.Context) *Result
 }
