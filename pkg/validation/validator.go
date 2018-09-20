@@ -23,7 +23,12 @@ func IsPhone(input string) bool {
 
 // IsValidPassword ...
 func IsValidPassword(input string) bool {
-	return IsMatch(input, "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})$")
+	length, uppercase, lowercase, number := false, false, false, false
+	length = IsMatch(input, "^.{8,}$")
+	uppercase = IsMatch(input, "[A-Z]+")
+	lowercase = IsMatch(input, "[a-z]+")
+	number = IsMatch(input, "[0-9]+")
+	return length && uppercase && lowercase && number
 }
 
 // IsMatch ...

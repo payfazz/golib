@@ -49,3 +49,12 @@ func TestPhoneSanitization(t *testing.T) {
 		t.Errorf("expected value:'%s' as result of validation.SanitizePhone()", expected)
 	}
 }
+
+func TestValidPassword(t *testing.T) {
+	password := "Ultraman123"
+
+	valid := validation.IsValidPassword(password)
+	if !valid {
+		t.Error("expected true")
+	}
+}
