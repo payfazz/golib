@@ -54,9 +54,11 @@ func (c *Client) Del(key string) error {
 }
 
 // NewClient , get new redis client
-func NewClient(connection string, name string) (*Client, error) {
+func NewClient(address, password string, db int, name string) (*Client, error) {
 	options := &goredis.Options{
-		Addr: connection,
+		Addr:     address,
+		Password: password,
+		DB:       db,
 		OnConnect: func(con *goredis.Conn) error {
 			_, err := con.ClientSetName(name).Result()
 			if err != nil {

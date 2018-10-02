@@ -17,8 +17,10 @@ type Payload struct {
 func TestSetGetString(t *testing.T) {
 	key := "pkg:redis:test:get-set-string"
 	expected := string(time.Now().UnixNano())
-	connectionInfo := "localhost:6379"
-	rc, err := redis.NewClient(connectionInfo, key)
+	address := "localhost:6379"
+	password := ""
+	db := 0
+	rc, err := redis.NewClient(address, password, db, key)
 	if err != nil {
 		t.Error(err)
 	}
@@ -41,8 +43,10 @@ func TestSetGetString(t *testing.T) {
 func TestSetGetNumber(t *testing.T) {
 	key := "pkg:redis:test:get-set-number"
 	expected := time.Now().UnixNano()
-	connectionInfo := "localhost:6379"
-	rc, err := redis.NewClient(connectionInfo, key)
+	address := "localhost:6379"
+	password := ""
+	db := 0
+	rc, err := redis.NewClient(address, password, db, key)
 	if err != nil {
 		t.Error(err)
 	}
@@ -65,8 +69,10 @@ func TestSetGetNumber(t *testing.T) {
 func TestSetGetStruct(t *testing.T) {
 	key := "pkg:redis:test:get-set-struct"
 	expected := &Payload{ID: 10}
-	connectionInfo := "localhost:6379"
-	rc, err := redis.NewClient(connectionInfo, key)
+	address := "localhost:6379"
+	password := ""
+	db := 0
+	rc, err := redis.NewClient(address, password, db, key)
 	if err != nil {
 		t.Error(err)
 	}
