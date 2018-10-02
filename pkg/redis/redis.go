@@ -56,9 +56,8 @@ func (c *Client) Del(key string) error {
 // NewClient , get new redis client
 func NewClient(address, password string, db int, name string) (*Client, error) {
 	options := &goredis.Options{
-		Addr:     address,
-		Password: password,
-		DB:       db,
+		Addr: address,
+		DB:   db,
 		OnConnect: func(con *goredis.Conn) error {
 			_, err := con.ClientSetName(name).Result()
 			if err != nil {
@@ -66,6 +65,9 @@ func NewClient(address, password string, db int, name string) (*Client, error) {
 			}
 			return nil
 		},
+	}
+	if password != "" {
+		options.Password = password
 	}
 
 	rc := goredis.NewClient(options)
