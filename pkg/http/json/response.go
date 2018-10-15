@@ -14,6 +14,7 @@ func encodeBody(writer http.ResponseWriter, data interface{}) error {
 
 // ResponseWithData , response with data
 func ResponseWithData(writer http.ResponseWriter, statusCode int, data interface{}) {
+	writer.Header().Set("Content-Type", "application/json; charset=utf-8")
 	writer.WriteHeader(statusCode)
 	if data != nil {
 		encodeBody(writer, data)
