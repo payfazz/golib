@@ -33,7 +33,6 @@ func ResponseWithError(writer http.ResponseWriter, err error) {
 	case e.PermissionError:
 		ResponseWithData(writer, http.StatusUnauthorized, err)
 	default:
-		httpCode := http.StatusBadRequest
-		http.Error(writer, err.Error(), httpCode)
+		ResponseWithData(writer, http.StatusBadRequest, err)
 	}
 }
