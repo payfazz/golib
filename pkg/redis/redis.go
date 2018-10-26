@@ -29,7 +29,7 @@ func (c *Client) Set(key string, data interface{}, seconds int64) error {
 		return err
 	}
 	if ok != "OK" {
-		return e.ServiceError("redis", errors.New("failed saving data to redis"))
+		return e.Service("REDIS_ERR", "redis", errors.New("failed saving data to redis"))
 	}
 	return nil
 }
