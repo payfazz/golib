@@ -5,14 +5,15 @@ import (
 	"fmt"
 )
 
-// Service , error indicating service error.
-type Service struct {
-	Name    string `json:"name"`
+// ServiceError , error indicating service error.
+type ServiceError struct {
+	Code    string `json:"code"`
 	Message string `json:"message"`
+	Name    string `json:"name"`
 }
 
 // Error ...
-func (err Service) Error() string {
+func (err ServiceError) Error() string {
 	b := new(bytes.Buffer)
 	if err.Name == "" {
 		fmt.Fprintf(b, "service error")
@@ -22,11 +23,12 @@ func (err Service) Error() string {
 	return b.String()
 }
 
-// ServiceError ...
-func ServiceError(name string, err error) error {
-	errService := Service{
-		Name:    name,
+// Service ...
+func Service(code, name string, err error) error {
+	errService := ServiceError{
+		Code:    code,
 		Message: err.Error(),
+		Name:    name,
 	}
 	return errService
 }

@@ -7,19 +7,21 @@ import (
 
 // Error , error containing validation message and properties.
 type Error struct {
-	Result *Result
+	Code    string   `json:"code"`
+	Message string   `json:"message"`
+	Fields  []*Field `json:"fields"`
 }
 
 func (err Error) Error() string {
 	b := new(bytes.Buffer)
-	if err.Result.Message == "" {
+	if err.Message == "" {
 		fmt.Fprint(b, "validation error")
 	} else {
-		fmt.Fprint(b, err.Result.Message)
+		fmt.Fprint(b, err.Message)
 	}
-	if err.Result.Fields != nil && len(err.Result.Fields) > 0 {
+	if err.Fields != nil && len(err.Fields) > 0 {
 		fmt.Fprint(b, "\nPlease check following fields:\n")
-		for _, field := range err.Result.Fields {
+		for _, field := range err.Fields {
 			fmt.Fprintf(b, "%s : %s\n", field.Name, field.Message)
 		}
 	}
@@ -27,7 +29,11 @@ func (err Error) Error() string {
 }
 
 // NewError , return new validation error instance.
-func NewError(r *Result) error {
-	valErr := Error{Result: r}
-	return valErr
+func NewError(code string, result *Result) error {
+	err := Error{
+		Code:    code,
+		Message: "validation error",
+		Fields:  result.Fields,
+	}
+	return err
 }

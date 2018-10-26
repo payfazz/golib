@@ -7,6 +7,7 @@ import (
 
 // PermissionError , error regarding permission.
 type PermissionError struct {
+	Code    string `json:"code"`
 	Message string `json:"message"`
 }
 
@@ -21,8 +22,9 @@ func (err PermissionError) Error() string {
 }
 
 // Permission ...
-func Permission(message string) error {
+func Permission(code, message string) error {
 	err := PermissionError{
+		Code:    code,
 		Message: message,
 	}
 	return err
