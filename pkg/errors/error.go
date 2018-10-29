@@ -27,7 +27,7 @@ func (err Error) Error() string {
 
 // New ...
 func New(code, message string) error {
-	err := NotFoundError{
+	err := Error{
 		Code:    code,
 		Message: message,
 	}
