@@ -23,6 +23,7 @@ func TestQueryableContext(t *testing.T) {
 }
 
 type queryable struct {
+	s.Queryable
 }
 
 func (q *queryable) Query(query string, args ...interface{}) (*sql.Rows, error) {

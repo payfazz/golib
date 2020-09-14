@@ -10,9 +10,9 @@ import (
 const webhookURI string = "https://hooks.slack.com/services/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"
 
 func TestWriterWithString(t *testing.T) {
-	writer, errWriter := writer.New(webhookURI, "writer_test", "TestWriter", "#dddddd", "")
-	if errWriter != nil {
-		t.Error(errWriter)
+	writer := writer.New(webhookURI, "writer_test", "TestWriter", "#dddddd", "")
+	if writer == nil {
+		t.Fatal("nil writer")
 	}
 	logger := log.New(writer, "", log.Llongfile)
 	logger.Print("hello logger")
@@ -25,9 +25,9 @@ type testStruct struct {
 }
 
 func TestWriterWithStruct(t *testing.T) {
-	writer, errWriter := writer.New(webhookURI, "writer_test", "TestWriter", "#dddddd", "")
-	if errWriter != nil {
-		t.Error(errWriter)
+	writer := writer.New(webhookURI, "writer_test", "TestWriter", "#dddddd", "")
+	if writer == nil {
+		t.Fatal("nil writer")
 	}
 	logger := log.New(writer, "", log.LstdFlags)
 	data := &testStruct{}
