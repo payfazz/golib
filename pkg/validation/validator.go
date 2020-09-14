@@ -18,7 +18,7 @@ func IsEmail(input string) bool {
 // IsPhone ...
 func IsPhone(input string) bool {
 	sanitized := SanitizePhone(input)
-	return IsMatch(sanitized, `^\+62[0-9]{10,13}$`)
+	return IsMatch(sanitized, `^\+62[0-9]{9,13}$`)
 }
 
 // IsValidPassword ...

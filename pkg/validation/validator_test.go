@@ -58,3 +58,13 @@ func TestValidPassword(t *testing.T) {
 		t.Error("expected true")
 	}
 }
+
+func TestValidate9DigitPhone(t *testing.T) {
+	// input := "0812asdf80801232"
+	input := "0811907855"
+
+	valid := validation.IsPhone(input)
+	if !valid {
+		t.Error("expected true")
+	}
+}

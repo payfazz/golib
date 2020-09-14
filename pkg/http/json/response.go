@@ -25,14 +25,14 @@ func ResponseWithData(writer http.ResponseWriter, statusCode int, data interface
 func ResponseWithError(writer http.ResponseWriter, err error) {
 	switch err.(type) {
 	case validation.Error:
-		vErr := err.(validation.Error)
-		ResponseWithData(writer, http.StatusUnprocessableEntity, vErr.Result)
+		ResponseWithData(writer, http.StatusUnprocessableEntity, err)
+	case e.ServiceError:
+		ResponseWithData(writer, http.StatusInternalServerError, err)
 	case e.NotFoundError:
 		ResponseWithData(writer, http.StatusNotFound, err)
 	case e.PermissionError:
 		ResponseWithData(writer, http.StatusUnauthorized, err)
 	default:
-		httpCode := http.StatusBadRequest
-		http.Error(writer, err.Error(), httpCode)
+		ResponseWithData(writer, http.StatusBadRequest, err)
 	}
 }

@@ -6,9 +6,7 @@ import (
 
 // Result ...
 type Result struct {
-	Code    string   `json:"code"`
-	Message string   `json:"message"`
-	Fields  []*Field `json:"fields"`
+	Fields []*Field `json:"fields"`
 }
 
 // Field ...
@@ -19,8 +17,8 @@ type Field struct {
 
 // NewResult return new validation result
 func NewResult() *Result {
-	r := &Result{Message: `validation error`, Code: "ValidationError"}
-	return r
+	result := &Result{}
+	return result
 }
 
 // Add , append new Field if name does not exist, updating existing message if exists
@@ -57,9 +55,9 @@ func (r *Result) HasErrors() bool {
 	return len(r.Fields) > 0
 }
 
-// Error , checks if result has error
-func (r *Result) Error() error {
-	return NewError(r)
+// Error , return error object
+func (r *Result) Error(code string) error {
+	return NewError(code, r)
 }
 
 func (r *Result) findField(name string) *Field {

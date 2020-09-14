@@ -7,8 +7,9 @@ import (
 
 // NotFoundError , error containing validation message and properties.
 type NotFoundError struct {
-	Data    string `json:"data"`
+	Code    string `json:"code"`
 	Message string `json:"message"`
+	Data    string `json:"data"`
 }
 
 func (err NotFoundError) Error() string {
@@ -22,10 +23,11 @@ func (err NotFoundError) Error() string {
 }
 
 // NotFound ...
-func NotFound(data string) error {
+func NotFound(code, data string) error {
 	err := NotFoundError{
-		Data:    data,
+		Code:    code,
 		Message: fmt.Sprintf(`'%s' not found`, data),
+		Data:    data,
 	}
 	return err
 }

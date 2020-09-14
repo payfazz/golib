@@ -30,7 +30,7 @@ func (client *Client) Send(author, title, footer, color string, jsonConvertible 
 	message := NewMessage()
 	_, err := message.Add(author, title, footer, color, jsonConvertible)
 	if err != nil {
-		return errors.ServiceError("slack", err)
+		return errors.Service("SERVICE_ERR", "slack", err)
 	}
 	return client.Message(message)
 }
@@ -38,7 +38,7 @@ func (client *Client) Send(author, title, footer, color string, jsonConvertible 
 // Message ...
 func (client *Client) Message(message *Message) error {
 	if message == nil {
-		return errors.ServiceError("slack", e.New("message_required"))
+		return errors.Service("SERVICE_ERR", "slack", e.New("message_required"))
 	}
 	if message.Attachments != nil {
 		now := time.Now().UTC()
@@ -48,19 +48,19 @@ func (client *Client) Message(message *Message) error {
 	}
 	msgBytes, errMsgMarshal := json.Marshal(message)
 	if errMsgMarshal != nil {
-		return errors.ServiceError("slack", errMsgMarshal)
+		return errors.Service("SERVICE_ERR", "slack", errMsgMarshal)
 	}
 	request, errReq := http.NewRequest("POST", client.hookURI, bytes.NewBuffer(msgBytes))
 	if errReq != nil {
-		return errors.ServiceError("slack", errReq)
+		return errors.Service("SERVICE_ERR", "slack", errReq)
 	}
 	request.Header.Set("Content-Type", "application/json")
 	response, errResponse := client.httpClient.Do(request)
 	if errResponse != nil {
-		return errors.ServiceError("slack", errResponse)
+		return errors.Service("SERVICE_ERR", "slack", errResponse)
 	}
 	if response.StatusCode != http.StatusOK {
-		return errors.ServiceError("slack", e.New("failed to send message to slack"))
+		return errors.Service("SERVICE_ERR", "slack", e.New("failed to send message to slack"))
 	}
 	return nil
 }

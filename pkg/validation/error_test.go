@@ -8,7 +8,7 @@ import (
 
 func TestWithEmptyMessageAndProperties(t *testing.T) {
 	r := validation.NewResult()
-	instance := r.Error()
+	instance := r.Error("C23")
 	errMessage := instance.Error()
 	if errMessage != "validation error" {
 		t.Fatalf("error message should be 'validation error' when creating ValidationError with empty message and properties")
