@@ -226,13 +226,3 @@ func (c *Client) SMEMBER(key string) ([]string, error) {
 	}
 	return data, nil
 }
-
-// SPOP remove one record then get one random member of the set
-func (c *Client) SPOP(key string) (string, error) {
-	cmd := c.rc.SPop(key)
-	result, err := cmd.Result()
-	if err != nil {
-		return "", err
-	}
-	return result, nil
-}

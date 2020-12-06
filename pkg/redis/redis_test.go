@@ -1,6 +1,7 @@
 package redis_test
 
 import (
+	"strings"
 	"testing"
 	"time"
 
@@ -98,5 +99,94 @@ func TestSetGetStruct(t *testing.T) {
 	}
 	if expected.State != actual.State {
 		t.Errorf(`expected State : '%v', got '%v'`, expected.State, actual.State)
+	}
+}
+
+func TestSetGetHash(t *testing.T) {
+	key := "pkg:redis:test:get-set-hash"
+	field := "testHash"
+	expected := string(time.Now().UnixNano())
+	address := "localhost:6379"
+	password := ""
+	db := 0
+	rc, err := redis.NewClient(address, password, db, key)
+	if err != nil {
+		t.Error(err)
+	}
+	err = rc.HSet(key, field, expected)
+	if err != nil {
+		t.Error(err)
+	}
+	err = rc.Exp(key, 30)
+	if err != nil {
+		t.Error(err)
+	}
+
+	isExists, err := rc.HExists(key, field)
+	if err != nil {
+		t.Error(err)
+	}
+	if !isExists {
+		t.Errorf(`expected failed`)
+	}
+
+	actual, err := rc.HGet(key, field)
+	if err != nil {
+		t.Error(err)
+	}
+	if expected != strings.Trim(actual, "\"") {
+		t.Errorf(`expected value : '%s', got '%s'`, expected, actual)
+	}
+
+	err = rc.HDel(key, field)
+	if err != nil {
+		t.Error(err)
+	}
+	data, err := rc.HVals(key)
+	if err != nil {
+		t.Error(err)
+	}
+	if len(data) > 0 {
+		t.Errorf(`expected value : empty, got '%s'`, data)
+	}
+
+}
+
+func TestGetSetSet(t *testing.T) {
+	key := "pkg:redis:test:get-set-set"
+	expected := string(time.Now().UnixNano())
+	address := "localhost:6379"
+	password := ""
+	db := 0
+	rc, err := redis.NewClient(address, password, db, key)
+	if err != nil {
+		t.Error(err)
+	}
+	err = rc.SADD(key, expected)
+	if err != nil {
+		t.Error(err)
+	}
+	err = rc.Exp(key, 30)
+	if err != nil {
+		t.Error(err)
+	}
+	isMember, err := rc.SISMEMBER(key, expected)
+	if err != nil {
+		t.Error(err)
+	}
+	if !isMember {
+		t.Error(`expected failed`)
+	}
+
+	err = rc.SREM(key, expected)
+	if err != nil {
+		t.Error(`expected failed`)
+	}
+	data, err := rc.SMEMBER(key)
+	if err != nil {
+		t.Error(`expected failed`)
+	}
+	if len(data) != 0 {
+		t.Errorf(`expected value : empty, got '%s'`, data)
 	}
 }
